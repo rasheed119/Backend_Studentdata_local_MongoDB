@@ -6,6 +6,7 @@ const router = express.Router();
 
 //To get list of Students Data
 router.get("/",async(req,res)=>{
+
     try {
         if(req.query.experience){
             req.query.experience = +req.query.experience;
@@ -15,11 +16,12 @@ router.get("/",async(req,res)=>{
         }
         const students = await getAllstudents(req)
         if(!students){
-            res.status(400).json({data : "Usernot found"})
+            res.status(400).json({data : "User not found"})
         }
         return res.status(200).json({data : students})
     } catch (error) {
-        return res.status(500).json({data : error.message})
+        return res.status(500).json({data : error.message});
+        console.log(error.message);
     }
 })
 
@@ -41,15 +43,8 @@ router.get("/:id",async(req,res)=>{
 router.post("/addstudent",async(req,res)=>{
 
     try {
-        const { name, batch, qualification, experience, taskCompletion, gender} = req.body
-        const result = await addstudents({
-            name,
-            batch,
-            qualification,
-            experience,
-            taskCompletion,
-            gender
-        });
+        const student = req.body;
+        const result = await addstudents(student);
         res.status(200).json({data : {result : result,message:"Added Succesfully"}})
     } catch (error) {
         res.status(400).json({data : error.message});
