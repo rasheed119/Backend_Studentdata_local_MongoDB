@@ -5,7 +5,7 @@ import { Deletestudent, addstudents, getAllstudents, getstudentbyid, updatestud 
 const router = express.Router();
 
 //To get list of Students Data
-router.get("/",async(req,res)=>{
+router.get("/all",async(req,res)=>{
 
     try {
         if(req.query.experience){

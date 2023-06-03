@@ -4,10 +4,7 @@ import bcrypt from "bcrypt";
 
 const router = express.Router();
 
-/* router.get("/", async(req, res) => {
-  const user = await user(req);
-  return res.status(200).json({data : user});
-}) */
+
 
 router.get("/all",async(req,res)=>{
 
@@ -64,6 +61,10 @@ router.delete("/delete/:id",async(req,res)=>{
   try {
     const {id} = req.params;
     const user = await getUserbyId(id);
+    const check_password = await bcrypt.compare(req.body.password,user.password);
+    if(!check_password){
+      return res.status(500).json({data : "Incorrect password"})
+    }
     if(!user){
       return res.status(400).json({data : "User Id not found"});
     }
