@@ -44,6 +44,21 @@ router.post("/addstudent",async(req,res)=>{
 
     try {
         const student = req.body;
+        if(!req.body){
+            return res.status(500).json({data : "Please provide your name, Gender, Qualification, Batch"})
+        }
+        if(!req.body.name){
+            return res.status(500).json({data : "Please provide your Name"});
+        }
+        if(!req.body.Gender){
+            return res.status(500).json({data : "Please provide your Gender"});
+        }
+        if(!req.body.Batch){
+            return res.status(500).json({data : "Please provide your Batch"});
+        }
+        if(!req.body.Qualification){
+            return res.status(500).json({data : "Please provide your Qualification"});
+        }
         const result = await addstudents(student);
         res.status(200).json({data : {result : result,message:"Added Succesfully"}})
     } catch (error) {
@@ -74,6 +89,10 @@ router.delete("/delete/:id",async(req,res)=>{
 
     try {
         const {id} = req.params;
+        const find_student_by_id = await getstudentbyid(id);
+        if(!find_student_by_id){
+            return res.status(500).json({data : "User Not Found in the Database"});
+        }
         const student = await Deletestudent(id);
         if(!id){
             res.status(400).json({data : "Please Provide the proper id"})
